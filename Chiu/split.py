@@ -13,7 +13,7 @@ def split(data):
     data.drop(['Wales'], inplace=True, axis=1)
     data['Health'] = data['Health'].map({1:1, 2:1, 3:0, 4:0, 5:0})
     
-    feature, target = data[data.columns[:-1]], data['Health']
+    feature, target = data[data.columns[-13:-1]], data['Health']
     X_train, X_test, y_train, y_test = train_test_split(feature, target, test_size=0.1, random_state=42)
     
     train = pd.concat([X_train, pd.DataFrame({'Health':y_train})], axis=1)
@@ -21,7 +21,9 @@ def split(data):
     good = train[train['Health'] == 1]
     bad = train[train['Health'] == 0]
     
-    good_sample = good.sample(n=bad.Health.count(), replace=True)
+    #good_sample = good.sample(n=bad.Health.count()*2, replace=True)
+    good_sample = good
+    
     sample = pd.concat([good_sample, bad], axis=0, ignore_index=True)
     sample = sample.sample(frac=1).reset_index(drop=True)
     
